@@ -112,6 +112,7 @@ export default function Home() {
                 >
                     <Sidebar 
                         notes={sortedNotes} 
+                        currentNoteId={currentNoteId}
                         createNewNote={createNewNote} 
                         routeChange={routeChange} 
                         deleteNote={deleteNote}

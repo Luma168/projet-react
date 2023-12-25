@@ -2,7 +2,8 @@ import { Button, Checkbox, IconButton, List, ListItem, ListItemButton, ListItemT
 import DeleteIcon from '@mui/icons-material/Delete';
 import Swal from 'sweetalert2'
 
-export default function Sidebar({notes, createNewNote, routeChange, deleteNote, updateNoteDone}) {
+export default function Sidebar({notes, currentNoteId, createNewNote, routeChange, deleteNote, updateNoteDone}) {
+
     return (
         <div className='Side'>
             <Button
@@ -23,6 +24,7 @@ export default function Sidebar({notes, createNewNote, routeChange, deleteNote, 
                 <ListItemButton
                 key={index}
                 onClick={() => routeChange(note)}
+                selected={note.id === currentNoteId}
                 >
                 <ListItem>
                     <Checkbox 
