@@ -1,0 +1,47 @@
+{
+  "notes": [
+    {
+      "title": "1",
+      "content": "il faut ce f",
+      "createdAt": "2023-12-25T21:45:00.090Z",
+      "updatedAt": "2023-12-25T21:58:28.797Z",
+      "done": true,
+      "id": 1
+    },
+    {
+      "title": "2",
+      "content": "deux deux",
+      "createdAt": "2023-12-25T21:45:03.350Z",
+      "updatedAt": "2023-12-25T21:58:53.873Z",
+      "done": true,
+      "id": 2
+    },
+    {
+      "title": "3",
+      "content": "trois trois trois g",
+      "createdAt": "2023-12-25T21:45:06.608Z",
+      "updatedAt": "2023-12-25T22:05:23.499Z",
+      "done": false,
+      "id": 3
+    },
+    {
+      "title": "4",
+      "content": "je ne cil",
+      "createdAt": "2023-12-25T21:45:08.124Z",
+      "updatedAt": "2023-12-25T21:58:35.029Z",
+      "done": false,
+      "id": 4
+    },
+    {
+      "title": "5",
+      "content": "Saisissez votre notedzrdcc",
+      "createdAt": "2023-12-25T21:45:11.364Z",
+      "updatedAt": "2023-12-25T22:03:43.650Z",
+      "done": true,
+      "id": 5
+    }
+  ],
+  "profile": {
+    "name": "Arnaud"
+  }
+}

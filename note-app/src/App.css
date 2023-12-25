@@ -1,0 +1,54 @@
+/* .Side {
+  width: 240px;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(29, 35, 39);
+}
+
+.Loading {
+  text-align: center;
+  padding: 16px;
+}
+
+.Main {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.Note-link {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px;
+  color: inherit;
+  text-decoration: inherit;
+  font-weight: bold;
+}
+
+.Note-link.active {
+  background-color: darkslategrey;
+}
+
+.Note-link-lastUpdatedAt {
+  font-size: 10px;
+  color: darkgrey;
+}
+
+.Button-create-note {
+  width: 40px;
+  height: 40px;
+  font-size: 24px;
+  background-color: rgb(44, 51, 56);
+}
+
+.Temperature {
+  padding: 8px;
+  font-size: 10px;
+  color: darkgrey;
+} */
