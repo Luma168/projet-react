@@ -1,5 +1,6 @@
 import { Button, Checkbox, IconButton, List, ListItem, ListItemButton, ListItemText, Typography} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Swal from 'sweetalert2'
 
 export default function Sidebar({notes, createNewNote, routeChange, deleteNote, updateNoteDone}) {
     return (
@@ -42,8 +43,33 @@ export default function Sidebar({notes, createNewNote, routeChange, deleteNote, 
                     />
                     <IconButton edge="end" aria-label="delete">
                       <DeleteIcon 
-                        sx={{color: 'white'}}
-                        onClick={()=> deleteNote(note.id)}
+                        sx={{
+                            color: 'white',
+                            '&:hover' : {color: 'red', transition: 'all 0.5s'}
+                        }}
+                        onClick={()=> 
+                            {
+                                Swal.fire({
+                                    title: "Êtes vous sûr de vouloir supprimer la note?",
+                                    text: "Cette action est irrévérsible!",
+                                    icon: "warning",
+                                    showCancelButton: true,
+                                    confirmButtonColor: "#3085d6",
+                                    cancelButtonColor: "#d33",
+                                    confirmButtonText: "Oui, Supprimer!"
+                                })
+                                .then((result) => {
+                                    if (result.isConfirmed) {
+                                        Swal.fire({
+                                            title: "Supprimé!",
+                                            text: "La note a été supprimée.",
+                                            icon: "success"
+                                        });
+                                        deleteNote(note.id)
+                                    }
+                                });
+                            }
+                        }
                       />
                     </IconButton>
                 </ListItem>
