@@ -3,12 +3,16 @@ import { Split } from 'uiw';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import Editor from '../components/Editor';
+import { Box, Button, Typography } from '@mui/material';
+import NoteAddIcon from '@mui/icons-material/NoteAdd';
 
 export default function Home() {
     const [notes, setNotes] = useState([]);
     const [currentNoteId, setCurrentNoteId] = useState("")
     const [tempNoteTitle, setTempNoteTitle] = useState("")
     const [tempNoteContent, setTempNoteContent] = useState("")
+    const [loaderTrigger, setLoaderTrigger] = useState(0)
+    const [showLoader, setShowLoader] = useState(false)
 
     const currentNote = notes.find(note => note.id === currentNoteId) || notes[0]
     const sortedNotes = notes.sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt))
@@ -40,6 +44,7 @@ export default function Home() {
             body: JSON.stringify({ title: "Nouvelle Note", content: "Saisissez votre note", createdAt: new Date(), updatedAt: new Date(), done: false })
             }
         )
+        setLoaderTrigger((trigger) => trigger + 1)
         fetchNotes()
     }    
 
@@ -59,6 +64,7 @@ export default function Home() {
                 body: JSON.stringify({ title: newValue, updatedAt: new Date() })
             }
         )
+        setLoaderTrigger((trigger) => trigger + 1)
     }
     const updateNoteContent = async function (newValue) {
         await fetch(
@@ -69,6 +75,7 @@ export default function Home() {
                 body: JSON.stringify({ content: newValue, updatedAt: new Date() })
             }
         )
+        setLoaderTrigger((trigger) => trigger + 1)
     }
     const updateNoteDone = async function (noteId, newValue) {
         await fetch(
@@ -76,18 +83,22 @@ export default function Home() {
             {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ done: newValue })
+                body: JSON.stringify({ done: newValue, updatedAt: new Date() })
             }
         )
+        setLoaderTrigger((trigger) => trigger + 1)
+        fetchNotes()
     }
 
     useEffect(() => {
         const timeoutId = setTimeout(() => {
             if (tempNoteTitle !== currentNote.title) {
                 updateNoteTitle(tempNoteTitle)
+                setShowLoader((show) => !show)
             }
             if (tempNoteContent !== currentNote.content) {
                 updateNoteContent(tempNoteContent)
+                setShowLoader((show) => !show)
             }
             fetchNotes()
         }, 500)
@@ -117,6 +128,9 @@ export default function Home() {
                         routeChange={routeChange} 
                         deleteNote={deleteNote}
                         updateNoteDone={updateNoteDone}
+                        loaderTrigger={loaderTrigger} 
+                        showLoader={showLoader} 
+                        setShowLoader={setShowLoader}
                     />
                     <Editor 
                         tempNoteTitle={tempNoteTitle} 
@@ -128,15 +142,33 @@ export default function Home() {
                     />
                 </Split>
                 :
-                <div className="no-notes">
-                    <h1>Vous n'avez pas de notes</h1>
-                    <button
-                        className="first-note"
+                <Box sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    width: '100%',
+                    height: '100%',
+
+                }}> 
+                    <Typography 
+                        variant="h1" 
+                        gutterBottom
+                        sx={{
+                            color: 'white'
+                        }}
+                    > 
+                        Vous n'avez pas de notes !
+                    </Typography>
+                    <Button 
+                        variant="contained" 
+                        startIcon={<NoteAddIcon />}
                         onClick={createNewNote}
+                        sx={{ fontSize: '1.5rem'}}
                     >
                         Créer une note
-                    </button>
-                </div> 
+                    </Button>
+                </Box>
             }
         </>
     )

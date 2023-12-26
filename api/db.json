@@ -1,28 +1,12 @@
 {
   "notes": [
     {
-      "title": "1",
-      "content": "il faut ce f",
-      "createdAt": "2023-12-25T21:45:00.090Z",
-      "updatedAt": "2023-12-25T21:58:28.797Z",
-      "done": true,
-      "id": 1
-    },
-    {
-      "title": "2",
-      "content": "deux deuxd",
-      "createdAt": "2023-12-25T21:45:03.350Z",
-      "updatedAt": "2023-12-25T22:25:00.395Z",
-      "done": true,
-      "id": 2
-    },
-    {
-      "title": "4",
-      "content": "je ne cil",
-      "createdAt": "2023-12-25T21:45:08.124Z",
-      "updatedAt": "2023-12-25T21:58:35.029Z",
+      "title": "Nouvelle Note",
+      "content": "Saisissez votre note",
+      "createdAt": "2023-12-26T19:26:04.011Z",
+      "updatedAt": "2023-12-26T19:26:04.011Z",
       "done": false,
-      "id": 4
+      "id": 1
     }
   ],
   "profile": {

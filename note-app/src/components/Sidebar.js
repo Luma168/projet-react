@@ -1,9 +1,10 @@
 import { Button, Checkbox, IconButton, List, ListItem, ListItemButton, ListItemText, Typography} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Swal from 'sweetalert2'
+import Loader from '../components/Loader';
 
-export default function Sidebar({notes, currentNoteId, createNewNote, routeChange, deleteNote, updateNoteDone}) {
 
+export default function Sidebar({notes, currentNoteId, createNewNote, routeChange, deleteNote, updateNoteDone, loaderTrigger, showLoader , setShowLoader}) {
     return (
         <div className='Side'>
             <Button
@@ -33,12 +34,12 @@ export default function Sidebar({notes, currentNoteId, createNewNote, routeChang
                     />
                     <ListItemText
                     primary={
-                        <Typography variant="h5">
+                        <Typography variant="h5" sx={{textDecoration: note.done ? 'line-through' : ''}}>
                         {note.title}
                         </Typography>
                     }
                     secondary={
-                        <Typography variant="caption">
+                        <Typography variant="caption" sx={{textDecoration: note.done ? 'line-through' : ''}}>
                         {note.content}
                         </Typography>
                     }
@@ -79,6 +80,7 @@ export default function Sidebar({notes, currentNoteId, createNewNote, routeChang
                 </ListItemButton>
             ) : null}
             </List>
-    </div>
+            <Loader loaderTrigger={loaderTrigger} showLoader={showLoader} setShowLoader={setShowLoader} />
+        </div>
     )
 }
