@@ -15,7 +15,7 @@ body{
   display: flex;
   flex-direction: column;
 }
-
+iframe#webpack-dev-server-client-overlay{display:none!important}
 /* .Loading {
   text-align: center;
   padding: 16px;

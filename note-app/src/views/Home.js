@@ -5,6 +5,7 @@ import Sidebar from '../components/Sidebar';
 import Editor from '../components/Editor';
 import { Box, Button, Typography } from '@mui/material';
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
+import Loader from '../components/Loader';
 
 export default function Home() {
     const [notes, setNotes] = useState([]);
@@ -119,8 +120,7 @@ export default function Home() {
         <>
             {
                 notes.length > 0 ?
-                <Split lineBar
-                >
+                <div>
                     <Sidebar 
                         notes={sortedNotes} 
                         currentNoteId={currentNoteId}
@@ -128,9 +128,6 @@ export default function Home() {
                         routeChange={routeChange} 
                         deleteNote={deleteNote}
                         updateNoteDone={updateNoteDone}
-                        loaderTrigger={loaderTrigger} 
-                        showLoader={showLoader} 
-                        setShowLoader={setShowLoader}
                     />
                     <Editor 
                         tempNoteTitle={tempNoteTitle} 
@@ -140,7 +137,8 @@ export default function Home() {
                         noteCreatedAt={currentNote.createdAt} 
                         noteUpdatedAt={currentNote.createdAt} 
                     />
-                </Split>
+                    <Loader loaderTrigger={loaderTrigger} showLoader={showLoader} setShowLoader={setShowLoader} />
+                </div>
                 :
                 <Box sx={{
                     display: 'flex',
