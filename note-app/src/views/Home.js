@@ -1,11 +1,65 @@
 import { useEffect, useState } from 'react';
-import { Split } from 'uiw';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import Editor from '../components/Editor';
-import { Box, Button, Typography } from '@mui/material';
+import { Button, Container, CssBaseline, Drawer, IconButton, List, ListItem, ListItemButton, ListItemText, Toolbar, Typography, styled, useTheme } from '@mui/material';
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import Loader from '../components/Loader';
+import MuiAppBar from '@mui/material/AppBar';
+import MenuIcon from '@mui/icons-material/Menu';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import { Divider} from 'uiw';
+
+
+
+const drawerWidth = 350;
+
+const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
+  ({ theme, open }) => ({
+    flexGrow: 1,
+    padding: theme.spacing(3),
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    marginLeft: `-${drawerWidth}px`,
+    ...(open && {
+      transition: theme.transitions.create('margin', {
+        easing: theme.transitions.easing.easeOut,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+      marginLeft: 0,
+    }),
+  }),
+);
+
+const AppBar = styled(MuiAppBar, {
+  shouldForwardProp: (prop) => prop !== 'open',
+})(({ theme, open }) => ({
+  transition: theme.transitions.create(['margin', 'width'], {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  ...(open && {
+    width: `calc(100% - ${drawerWidth}px)`,
+    marginLeft: `${drawerWidth}px`,
+    transition: theme.transitions.create(['margin', 'width'], {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  }),
+}));
+
+const DrawerHeader = styled('div')(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  padding: theme.spacing(0, 1),
+  // necessary for content to be below app bar
+  ...theme.mixins.toolbar,
+  justifyContent: 'space-between',
+}));
+
 
 export default function Home() {
     const [notes, setNotes] = useState([]);
@@ -116,31 +170,100 @@ export default function Home() {
         fetchNotes()
     }
   
+
+    const theme = useTheme();
+    const [open, setOpen] = useState(true);
+
+    const handleDrawerOpen = () => {
+    setOpen(true);
+    };
+
+    const handleDrawerClose = () => {
+    setOpen(false);
+    };
+
     return (
         <>
             {
                 notes.length > 0 ?
-                <div>
-                    <Sidebar 
-                        notes={sortedNotes} 
-                        currentNoteId={currentNoteId}
-                        createNewNote={createNewNote} 
-                        routeChange={routeChange} 
-                        deleteNote={deleteNote}
-                        updateNoteDone={updateNoteDone}
-                    />
-                    <Editor 
-                        tempNoteTitle={tempNoteTitle} 
-                        tempNoteContent={tempNoteContent} 
-                        setTempNoteTitle={setTempNoteTitle} 
-                        setTempNoteContent={setTempNoteContent} 
-                        noteCreatedAt={currentNote.createdAt} 
-                        noteUpdatedAt={currentNote.createdAt} 
-                    />
+                <Container sx={{height: '100%', width: '100%'}}>
+                    <CssBaseline />
+                    <AppBar position="fixed" open={open}>
+                        <Toolbar>
+                            <IconButton
+                                color="inherit"
+                                aria-label="open drawer"
+                                onClick={handleDrawerOpen}
+                                edge="start"
+                                sx={{ mr: 2, ...(open && { display: 'none' }) }}
+                            >
+                                <MenuIcon />
+                            </IconButton>
+                            <Typography variant="h6" noWrap component="div">
+                                Persistent drawer
+                            </Typography>
+                        </Toolbar>
+                    </AppBar>
+                    <Drawer
+                        sx={{
+                            width: drawerWidth,
+                            flexShrink: 0,
+                            '& .MuiDrawer-paper': {
+                            width: drawerWidth,
+                            boxSizing: 'border-box',
+                            },
+                        }}
+                        variant="persistent"
+                        anchor="left"
+                        open={open}
+                    >
+                        <DrawerHeader>
+                            <Button
+                                variant="contained" 
+                                onClick={() => {createNewNote()}}
+                                startIcon={<NoteAddIcon />}
+                                sx={{ fontSize: '1.5rem'}}
+                            >
+                                Nouvelle note
+                            </Button>
+                            <IconButton onClick={handleDrawerClose}>
+                                {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+                            </IconButton>
+                        </DrawerHeader>
+                        <Divider />
+                            <Sidebar 
+                                notes={sortedNotes} 
+                                currentNoteId={currentNoteId}
+                                routeChange={routeChange} 
+                                deleteNote={deleteNote}
+                                updateNoteDone={updateNoteDone}
+                            />
+                        <Divider />
+                        <List>
+                            {['All mail', 'Trash', 'Spam'].map((text, index) => (
+                            <ListItem key={text} disablePadding>
+                                <ListItemButton>
+                                <ListItemText primary={text} />
+                                </ListItemButton>
+                            </ListItem>
+                            ))}
+                        </List>
+                    </Drawer>
+                    <Main open={open}>
+                        <DrawerHeader />
+                        <Editor
+                            tempNoteTitle={tempNoteTitle} 
+                            tempNoteContent={tempNoteContent} 
+                            setTempNoteTitle={setTempNoteTitle} 
+                            setTempNoteContent={setTempNoteContent} 
+                            noteCreatedAt={currentNote.createdAt} 
+                            noteUpdatedAt={currentNote.createdAt} 
+                        />
+                    </Main>
                     <Loader loaderTrigger={loaderTrigger} showLoader={showLoader} setShowLoader={setShowLoader} />
-                </div>
+                </Container>
                 :
-                <Box sx={{
+                <Container sx={{
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'center',
@@ -166,7 +289,7 @@ export default function Home() {
                     >
                         Créer une note
                     </Button>
-                </Box>
+                </Container>
             }
         </>
     )

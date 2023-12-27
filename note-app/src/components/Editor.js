@@ -3,23 +3,49 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateField } from '@mui/x-date-pickers/DateField';
 import { TimeField } from '@mui/x-date-pickers/TimeField'
 import dayjs from 'dayjs'
-import { TextField } from "@mui/material"
+import { Box, TextField } from "@mui/material"
 
 export default function Editor({tempNoteTitle, tempNoteContent, setTempNoteTitle, setTempNoteContent, noteCreatedAt, noteUpdatedAt}) {
 
     return (
-        <div className="Main">
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DateField
-                    label="Crée le:"
-                    format="MM - DD - YYYY"
+        <Box
+            sx={{
+                height:'100%',
+                display:'flex',
+                flexDirection:'column',
+                justifyContent:'space-between'
+            }}
+        >
+            <Box
+                sx={{
+                    display: 'flex',
+                    justifyContent:'space-between',
+                    marginBottom: '30px'
+                }}
+            >
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DateField
+                        label="Crée le:"
+                        format="DD - MM - YYYY"
+                        defaultValue={dayjs(noteCreatedAt)}
+                    />
+                    <TimeField
+                    label="à:"
                     defaultValue={dayjs(noteCreatedAt)}
-                />
-                <TimeField
-                label="à:"
-                defaultValue={dayjs(noteCreatedAt)}
-                />
-            </LocalizationProvider>
+                    />
+                </LocalizationProvider>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DateField
+                        label="Dérnière mise à jour le:"
+                        format="DD - MM - YYYY"
+                        defaultValue={dayjs(noteUpdatedAt)}
+                    />
+                    <TimeField
+                    label="à:"
+                    defaultValue={dayjs(noteUpdatedAt)}
+                    />
+                </LocalizationProvider>
+            </Box>
             <TextField
                 id="outlined-multiline-static"
                 label="Titre"
@@ -32,7 +58,7 @@ export default function Editor({tempNoteTitle, tempNoteContent, setTempNoteTitle
                 type='text'
                 autoFocus
                 required
-                sx={{marginBottom: "30px"}}
+                sx={{marginBottom: "50px"}}
             />
 
             <TextField
@@ -48,10 +74,10 @@ export default function Editor({tempNoteTitle, tempNoteContent, setTempNoteTitle
                 autoComplete='off'
                 inputProps={{
                 style: {
-                    height: '80vh',
+                    height: '50vh',  
                 },
                 }}
             />
-        </div>
+        </Box>
     )
 }

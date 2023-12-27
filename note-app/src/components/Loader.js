@@ -50,7 +50,7 @@ useEffect(() => {
     return (
         
         showLoader ? 
-        <Box sx={{ display: 'flex', alignItems: 'center', position: 'absolute', bottom: '5px', right: '20px'}}>
+        <Box sx={{ display: 'flex', alignItems: 'center', position: 'absolute', bottom: '15px', right: '15px'}}>
             <Box sx={{ m: 1, position: 'relative' }}>
                 <Fab
                 aria-label="save"
