@@ -5,12 +5,13 @@ import { TimeField } from '@mui/x-date-pickers/TimeField'
 import dayjs from 'dayjs'
 import { Box, TextField } from "@mui/material"
 
-export default function Editor({tempNoteTitle, tempNoteContent, setTempNoteTitle, setTempNoteContent, noteCreatedAt, noteUpdatedAt}) {
+export default function Editor({tempNoteTitle, tempNoteContent, setTempNoteTitle, setTempNoteContent, noteCreatedAt, noteUpdatedAt, drawerWidth}) {
 
     return (
         <Box
             sx={{
                 height:'100%',
+                marginLeft: `${drawerWidth}px`,
                 display:'flex',
                 flexDirection:'column',
                 justifyContent:'space-between'

@@ -13,7 +13,7 @@ import { Divider} from 'uiw';
 
 
 
-const drawerWidth = 350;
+const drawerWidth = 400;
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({
@@ -200,7 +200,7 @@ export default function Home() {
                                 <MenuIcon />
                             </IconButton>
                             <Typography variant="h6" noWrap component="div">
-                                Persistent drawer
+                                Note App
                             </Typography>
                         </Toolbar>
                     </AppBar>
@@ -218,6 +218,9 @@ export default function Home() {
                         open={open}
                     >
                         <DrawerHeader>
+                            <IconButton onClick={handleDrawerClose}>
+                                {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+                            </IconButton>
                             <Button
                                 variant="contained" 
                                 onClick={() => {createNewNote()}}
@@ -226,9 +229,6 @@ export default function Home() {
                             >
                                 Nouvelle note
                             </Button>
-                            <IconButton onClick={handleDrawerClose}>
-                                {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-                            </IconButton>
                         </DrawerHeader>
                         <Divider />
                             <Sidebar 
@@ -238,16 +238,6 @@ export default function Home() {
                                 deleteNote={deleteNote}
                                 updateNoteDone={updateNoteDone}
                             />
-                        <Divider />
-                        <List>
-                            {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                            <ListItem key={text} disablePadding>
-                                <ListItemButton>
-                                <ListItemText primary={text} />
-                                </ListItemButton>
-                            </ListItem>
-                            ))}
-                        </List>
                     </Drawer>
                     <Main open={open}>
                         <DrawerHeader />
@@ -258,6 +248,7 @@ export default function Home() {
                             setTempNoteContent={setTempNoteContent} 
                             noteCreatedAt={currentNote.createdAt} 
                             noteUpdatedAt={currentNote.createdAt} 
+                            drawerWidth={drawerWidth}
                         />
                     </Main>
                     <Loader loaderTrigger={loaderTrigger} showLoader={showLoader} setShowLoader={setShowLoader} />
@@ -273,11 +264,8 @@ export default function Home() {
 
                 }}> 
                     <Typography 
-                        variant="h1" 
+                        variant="h2" 
                         gutterBottom
-                        sx={{
-                            color: 'white'
-                        }}
                     > 
                         Vous n'avez pas de notes !
                     </Typography>

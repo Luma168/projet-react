@@ -20,7 +20,7 @@ export default function Sidebar({notes, currentNoteId, routeChange, deleteNote, 
             >
             <ListItem>
                 <Checkbox 
-                    defaultChecked={note.done} 
+                    checked={note.done} 
                     onChange={() => updateNoteDone(note.id, !note.done)}
                 />
                 <ListItemText
