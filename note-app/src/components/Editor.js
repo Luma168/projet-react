@@ -24,28 +24,46 @@ export default function Editor({tempNoteTitle, tempNoteContent, setTempNoteTitle
                     marginBottom: '30px'
                 }}
             >
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DateField
-                        label="Crée le:"
-                        format="DD - MM - YYYY"
+                <Box>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DateField
+                            label="Crée le:"
+                            format="DD - MM - YYYY"
+                            defaultValue={dayjs(noteCreatedAt)}
+                            sx={{
+                                marginBottom: '10px',
+                                marginLeft: '10px'
+                            }}
+                            />
+                        <TimeField
+                        label="à:"
                         defaultValue={dayjs(noteCreatedAt)}
-                    />
-                    <TimeField
-                    label="à:"
-                    defaultValue={dayjs(noteCreatedAt)}
-                    />
-                </LocalizationProvider>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DateField
-                        label="Dérnière mise à jour le:"
-                        format="DD - MM - YYYY"
+                        sx={{
+                            marginLeft: '10px'
+                        }}
+                        />
+                    </LocalizationProvider>
+                </Box>
+                <Box>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DateField
+                            label="Dérnière mise à jour le:"
+                            format="DD - MM - YYYY"
+                            defaultValue={dayjs(noteUpdatedAt)}
+                            sx={{
+                                marginLeft: '10px',
+                                marginBottom: '10px'
+                            }}
+                            />
+                        <TimeField
+                        label="à:"
                         defaultValue={dayjs(noteUpdatedAt)}
-                    />
-                    <TimeField
-                    label="à:"
-                    defaultValue={dayjs(noteUpdatedAt)}
-                    />
-                </LocalizationProvider>
+                        sx={{
+                            marginLeft: '10px'
+                        }}
+                        />
+                    </LocalizationProvider>
+                </Box>
             </Box>
             <TextField
                 id="outlined-multiline-static"
@@ -64,7 +82,7 @@ export default function Editor({tempNoteTitle, tempNoteContent, setTempNoteTitle
 
             <TextField
                 id="outlined-multiline-static"
-                label="Contenus"
+                label="Contenu"
                 multiline
                 rows={4}
                 value={tempNoteContent}
