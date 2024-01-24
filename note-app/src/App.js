@@ -7,7 +7,7 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route exact path="/" element={<Navigate to={"/notes"} />} />
-
+        
         <Route path="/notes" element={<Home />}>
           <Route path=":noteId" element={<Home />}></Route>
         </Route>

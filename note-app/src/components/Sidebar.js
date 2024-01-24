@@ -50,12 +50,13 @@ export default function Sidebar({notes, currentNoteId, routeChange, deleteNote, 
                                 showCancelButton: true,
                                 confirmButtonColor: "#3085d6",
                                 cancelButtonColor: "#d33",
-                                confirmButtonText: "Oui, Supprimer!"
+                                confirmButtonText: "Oui, Supprimer!",
+                                cancelButtonText: "Annuler"
                             })
                             .then((result) => {
                                 if (result.isConfirmed) {
                                     Swal.fire({
-                                        title: "Supprimé!",
+                                        title: "Supprimée!",
                                         text: "La note a été supprimée.",
                                         icon: "success"
                                     });
