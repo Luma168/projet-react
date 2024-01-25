@@ -1,52 +1,40 @@
 {
   "notes": [
     {
-      "id": "040f",
-      "title": "Projet C",
-      "content": "JE DETESTE LE PROF DE C !",
-      "createdAt": "2024-01-19T11:05:39.026Z",
-      "updatedAt": "2024-01-25T10:17:30.815Z",
-      "done": false
+      "id": "f178",
+      "title": "sdsds",
+      "content": "SEX",
+      "createdAt": "2024-01-25T13:18:21.504Z",
+      "updatedAt": "2024-01-25T13:19:13.304Z",
+      "done": false,
+      "pinned": true
     },
     {
-      "id": "c0a7",
-      "title": "Projet  dgggggggggggg",
-      "content": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacscacc",
-      "createdAt": "2024-01-19T11:06:18.028Z",
-      "updatedAt": "2024-01-25T11:57:50.271Z",
-      "done": true
-    },
-    {
-      "id": "8a2c",
-      "title": "Projet dataminingR",
-      "content": "MBIGUIDIIIIIIIIIIIIcIIIIIcxcIIIcdsds",
-      "createdAt": "2024-01-19T11:06:40.930Z",
-      "updatedAt": "2024-01-25T11:57:50.997Z",
-      "done": false
-    },
-    {
-      "id": "2363",
-      "title": "Projet React ",
-      "content": "meilleur infddtervenant EVER !xc",
-      "createdAt": "2024-01-19T11:07:10.380Z",
-      "updatedAt": "2024-01-25T11:08:36.297Z",
-      "done": false
-    },
-    {
-      "id": "84ed",
-      "title": "Nouvelle Notedddddddddddddddddddddddddddddddddddddddd",
-      "content": "Saisissez votre noteccccdvc,,c",
-      "createdAt": "2024-01-25T09:04:28.780Z",
-      "updatedAt": "2024-01-25T11:18:10.504Z",
-      "done": false
-    },
-    {
-      "id": "1d5a",
+      "id": "bbef",
       "title": "Nouvelle Note",
       "content": "Saisissez votre note",
-      "createdAt": "2024-01-25T10:51:28.566Z",
-      "updatedAt": "2024-01-25T10:51:28.566Z",
-      "done": false
+      "createdAt": "2024-01-25T13:18:48.636Z",
+      "updatedAt": "2024-01-25T13:19:15.890Z",
+      "done": true,
+      "pinned": false
+    },
+    {
+      "id": "5ef4",
+      "title": "Nouvelle Note",
+      "content": "Saisissez votre note",
+      "createdAt": "2024-01-25T13:18:48.796Z",
+      "updatedAt": "2024-01-25T13:18:48.796Z",
+      "done": false,
+      "pinned": false
+    },
+    {
+      "id": "7a09",
+      "title": "Nouvelle Note",
+      "content": "Saisissez votre note",
+      "createdAt": "2024-01-25T13:18:48.970Z",
+      "updatedAt": "2024-01-25T13:19:14.574Z",
+      "done": false,
+      "pinned": true
     }
   ],
   "profile": {

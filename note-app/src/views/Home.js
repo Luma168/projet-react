@@ -23,13 +23,12 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    marginLeft: `-${drawerWidth}px`,
     ...(open && {
       transition: theme.transitions.create('margin', {
         easing: theme.transitions.easing.easeOut,
         duration: theme.transitions.duration.enteringScreen,
       }),
-      marginLeft: 0,
+      marginLeft: drawerWidth,
     }),
   }),
 );
@@ -109,20 +108,28 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   }));
   
 
-export default function Home({onChangeTheme}) {
+export default function Home({onChangeTheme, theme}) {
+    const [open, setOpen] = useState(true);
+
     const [notes, setNotes] = useState([]);
     const {currentNoteId} = useParams()
     var currentNote = notes.find(note => note.id === currentNoteId)
 
     const [tempNoteTitle, setTempNoteTitle] = useState("")
     const [tempNoteContent, setTempNoteContent] = useState("")
+    const [tempNoteCreatedAt, setTempNoteCreatedAt] = useState("")
+    const [tempNoteUpdatedAt, setTempNoteUpdatedAt] = useState("")
 
     const [loaderTrigger, setLoaderTrigger] = useState(0)
     const [showLoader, setShowLoader] = useState(false)
 
     const sortedNotes = notes.sort((a, b) => {
+        if (a.pinned && !b.pinned) return -1;
+        if (!a.pinned && b.pinned) return 1;
+        
         if (a.done && !b.done) return -1;
         if (!a.done && b.done) return 1;
+
         return new Date(b.updatedAt) - new Date(a.updatedAt);
     });
     
@@ -144,7 +151,7 @@ export default function Home({onChangeTheme}) {
             {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ title: "Nouvelle Note", content: "Saisissez votre note", createdAt: new Date(), updatedAt: new Date(), done: false })
+            body: JSON.stringify({ title: "Nouvelle Note", content: "Saisissez votre note", createdAt: new Date(), updatedAt: new Date(), done: false, pinned: false })
             }
         )
         setLoaderTrigger((trigger) => trigger + 1)
@@ -155,6 +162,8 @@ export default function Home({onChangeTheme}) {
         if (currentNote) {
             setTempNoteTitle(currentNote.title)
             setTempNoteContent(currentNote.content)
+            setTempNoteCreatedAt(currentNote.createdAt)
+            setTempNoteUpdatedAt(currentNote.updatedAt)
         }
     }, [currentNote])
 
@@ -192,6 +201,18 @@ export default function Home({onChangeTheme}) {
         setLoaderTrigger((trigger) => trigger + 1)
         fetchNotes()
     }
+    const updateNotePin = async function (noteId, newValue) {
+        await fetch(
+            `/notes/${noteId}`,
+            {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ pinned: newValue, updatedAt: new Date() })
+            }
+        )
+        setLoaderTrigger((trigger) => trigger + 1)
+        fetchNotes()
+    }
 
     useEffect(() => {
         const timeoutId = setTimeout(() => {
@@ -218,10 +239,6 @@ export default function Home({onChangeTheme}) {
         fetchNotes()
     }
   
-
-    const theme = useTheme();
-    const [open, setOpen] = useState(true);
-
     const handleDrawerOpen = () => {
     setOpen(true);
     };
@@ -277,30 +294,51 @@ export default function Home({onChangeTheme}) {
                                 variant="contained" 
                                 onClick={() => {createNewNote()}}
                                 startIcon={<NoteAddIcon />}
-                                sx={{ fontSize: '1.5rem'}}
+                                sx={{ fontSize: '1.5rem', marginRight: '15px', marginTop: '10px'}}
                             >
                                 Nouvelle note
                             </Button>
                         </DrawerHeader>
                         <Divider />
-                            <Sidebar 
-                                notes={sortedNotes} 
-                                currentNoteId={currentNoteId}
-                                deleteNote={deleteNote}
-                                updateNoteDone={updateNoteDone}
-                            />
-                    </Drawer>
-                    <Main open={open}>
-                        <DrawerHeader />
-                        <Editor
-                            tempNoteTitle={tempNoteTitle} 
-                            tempNoteContent={tempNoteContent} 
-                            setTempNoteTitle={setTempNoteTitle} 
-                            setTempNoteContent={setTempNoteContent} 
-                            noteCreatedAt={currentNote.createdAt} 
-                            noteUpdatedAt={currentNote.updatedAt} 
-                            drawerWidth={drawerWidth}
+                        <Sidebar 
+                            notes={sortedNotes} 
+                            currentNoteId={currentNoteId}
+                            deleteNote={deleteNote}
+                            updateNoteDone={updateNoteDone}
+                            updateNotePin={updateNotePin}
                         />
+                        
+                    </Drawer>
+                    <Main open={open} sx={{height:'90%'}}>
+                        <DrawerHeader />
+                        {
+                            currentNote ? 
+                            <Editor
+                                tempNoteTitle={tempNoteTitle} 
+                                tempNoteContent={tempNoteContent} 
+                                setTempNoteTitle={setTempNoteTitle} 
+                                setTempNoteContent={setTempNoteContent} 
+                                noteCreatedAt={tempNoteCreatedAt} 
+                                noteUpdatedAt={tempNoteUpdatedAt} 
+                            />
+                            : 
+                            <Container sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                width: '100%',
+                                height: '100%',
+            
+                            }}> 
+                                <Typography 
+                                    variant="h2" 
+                                    gutterBottom
+                                > 
+                                    Sélectionnez une note
+                                </Typography>
+                            </Container>
+                        }
                     </Main>
                     <Loader loaderTrigger={loaderTrigger} showLoader={showLoader} setShowLoader={setShowLoader} />
                 </Container>

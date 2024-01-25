@@ -2,10 +2,12 @@ import { Checkbox, IconButton, List, ListItem, ListItemButton, ListItemText, Typ
 import DeleteIcon from '@mui/icons-material/Delete';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import PushPinIcon from '@mui/icons-material/PushPin';
+import PushPinOutlinedIcon from '@mui/icons-material/PushPinOutlined';
 import Swal from 'sweetalert2'
 import { Link } from 'react-router-dom';
 
-export default function Sidebar({notes, currentNoteId, routeChange, deleteNote, updateNoteDone}) {
+export default function Sidebar({notes, currentNoteId, deleteNote, updateNoteDone, updateNotePin}) {
     return (
         <List
         sx={{
@@ -19,6 +21,15 @@ export default function Sidebar({notes, currentNoteId, routeChange, deleteNote, 
                     selected={note.id === currentNoteId}
                 >
                 <ListItem>
+                    <Checkbox 
+                        checked={note.pinned} 
+                        icon={<PushPinOutlinedIcon/>}
+                        checkedIcon={<PushPinIcon/>}
+                        onChange={() => updateNotePin(note.id, !note.pinned)}
+                        onClick={(e)=>{
+                            e.stopPropagation()
+                        }}
+                    />
                     <Checkbox 
                         checked={note.done} 
                         icon={<CheckCircleOutlineIcon/>}

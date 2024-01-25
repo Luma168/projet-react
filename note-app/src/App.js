@@ -20,8 +20,8 @@ export default function App() {
         <Routes>
           <Route exact path="/" element={<Navigate to={"/notes"} />} />
           
-          <Route path="/notes" element={<Home onChangeTheme={setThemeVal} />}>
-            <Route path=":currentNoteId" element={<Home onChangeTheme={setThemeVal}  />}></Route>
+          <Route path="/notes" element={<Home onChangeTheme={setThemeVal} theme={theme} />}>
+            <Route path=":currentNoteId" element={<Home onChangeTheme={setThemeVal} theme={theme}  />}></Route>
           </Route>
         </Routes>
       </BrowserRouter>
