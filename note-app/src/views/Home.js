@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import Editor from '../components/Editor';
-import { Box, Button, Container, CssBaseline, Drawer, FormControlLabel, IconButton, List, ListItem, ListItemButton, ListItemText, Switch, Toolbar, Typography, styled, useTheme } from '@mui/material';
+import { Box, Button, Container, CssBaseline, Drawer, FormControlLabel, IconButton, Switch, Toolbar, Typography, styled} from '@mui/material';
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import Loader from '../components/Loader';
 import MuiAppBar from '@mui/material/AppBar';
@@ -10,8 +10,6 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { Divider} from 'uiw';
-import { func } from 'prop-types';
-
 
 
 const drawerWidth = 400;
@@ -29,7 +27,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
         easing: theme.transitions.easing.easeOut,
         duration: theme.transitions.duration.enteringScreen,
       }),
-      marginLeft: drawerWidth,
+      marginLeft: '35px',
     }),
   }),
 );
@@ -55,7 +53,6 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
   ...theme.mixins.toolbar,
   justifyContent: 'space-between',
 }));
@@ -120,8 +117,6 @@ export default function Home({onChangeTheme, theme}) {
 
     const [tempNoteTitle, setTempNoteTitle] = useState("")
     const [tempNoteContent, setTempNoteContent] = useState("")
-    const [tempNoteCreatedAt, setTempNoteCreatedAt] = useState("")
-    const [tempNoteUpdatedAt, setTempNoteUpdatedAt] = useState("")
 
     const [loaderTrigger, setLoaderTrigger] = useState(0)
     const [showLoader, setShowLoader] = useState(false)
@@ -158,7 +153,7 @@ export default function Home({onChangeTheme, theme}) {
     }, [currentNoteId])
 
     const createNewNote = async function () {
-        await fetch(
+        const response = await fetch(
             "/notes",
             {
             method: 'POST',
@@ -168,14 +163,13 @@ export default function Home({onChangeTheme, theme}) {
         )
         setLoaderTrigger((trigger) => trigger + 1)
         fetchNotes()
+        return response
     }    
 
     useEffect(() => {
         if (currentNote) {
             setTempNoteTitle(currentNote.title)
             setTempNoteContent(currentNote.content)
-            setTempNoteCreatedAt(currentNote.createdAt)
-            setTempNoteUpdatedAt(currentNote.updatedAt)
         }
     }, [currentNote])
 
@@ -262,6 +256,7 @@ export default function Home({onChangeTheme, theme}) {
         setOpen(false)
     }
 
+    const navigate = useNavigate();
     return (
         <>
             {
@@ -318,14 +313,19 @@ export default function Home({onChangeTheme, theme}) {
                             </IconButton>
                             <Button
                                 variant="contained" 
-                                onClick={() => {createNewNote()}}
+                                onClick={() => {
+                                    createNewNote()
+                                    .then((resp) => resp.json())
+                                    .then((r) => navigate(`/notes/${r.id}`))
+
+                                }}
                                 startIcon={<NoteAddIcon />}
-                                sx={{ fontSize: '1.5rem', marginRight: '15px', marginTop: '10px'}}
+                                sx={{ marginRight: '15px'}}
                             >
                                 Nouvelle note
                             </Button>
                         </DrawerHeader>
-                        <Divider />
+                        <Divider/>
                         <Sidebar 
                             notes={sortedNotes} 
                             currentNoteId={currentNoteId}
@@ -333,7 +333,6 @@ export default function Home({onChangeTheme, theme}) {
                             updateNoteDone={updateNoteDone}
                             updateNotePin={updateNotePin}
                         />
-                        
                     </Drawer>
                     <Main open={open} sx={{height:'90%'}}>
                         <DrawerHeader />
@@ -343,9 +342,7 @@ export default function Home({onChangeTheme, theme}) {
                                 tempNoteTitle={tempNoteTitle} 
                                 tempNoteContent={tempNoteContent} 
                                 setTempNoteTitle={setTempNoteTitle} 
-                                setTempNoteContent={setTempNoteContent} 
-                                noteCreatedAt={tempNoteCreatedAt} 
-                                noteUpdatedAt={tempNoteUpdatedAt} 
+                                setTempNoteContent={setTempNoteContent}
                             />
                             : 
                             <Container sx={{

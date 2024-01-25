@@ -5,7 +5,7 @@ import { TimeField } from '@mui/x-date-pickers/TimeField'
 import dayjs from 'dayjs'
 import { Box, TextField } from "@mui/material"
 
-import {useEffect, useState} from "react";
+import { useState } from "react";
 import ReactMde from "react-mde";
 import * as Showdown from "showdown";
 import "react-mde/lib/styles/css/react-mde-all.css";
@@ -17,65 +17,18 @@ const converter = new Showdown.Converter({
     tasklists: true
   });
 
-export default function Editor({tempNoteTitle, tempNoteContent, setTempNoteTitle, setTempNoteContent, noteCreatedAt, noteUpdatedAt}) {
+export default function Editor({tempNoteTitle, tempNoteContent, setTempNoteTitle, setTempNoteContent}) {
     const [selectedTab, setSelectedTab] = useState("write");
     return (
         <Box
             sx={{
                 height:'100%',
+                width:'100%',
                 display:'flex',
                 flexDirection:'column',
                 justifyContent:'space-around'
             }}
         >
-            <Box
-                sx={{
-                    display: 'flex',
-                    justifyContent:'space-between',
-                    marginBottom: '30px'
-                }}
-            >
-                <Box>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DateField
-                            label="Crée le:"
-                            format="DD - MM - YYYY"
-                            value={dayjs(noteCreatedAt)}
-                            sx={{
-                                marginBottom: '10px',
-                                marginLeft: '10px'
-                            }}
-                            />
-                        <TimeField
-                        label="à:"
-                        value={dayjs(noteCreatedAt)}
-                        sx={{
-                            marginLeft: '10px'
-                        }}
-                        />
-                    </LocalizationProvider>
-                </Box>
-                <Box>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DateField
-                            label="Dérnière mise à jour le:"
-                            format="DD - MM - YYYY"
-                            value={dayjs(noteUpdatedAt)}
-                            sx={{
-                                marginLeft: '10px',
-                                marginBottom: '10px'
-                            }}
-                            />
-                        <TimeField
-                        label="à:"
-                        value={dayjs(noteUpdatedAt)}
-                        sx={{
-                            marginLeft: '10px'
-                        }}
-                        />
-                    </LocalizationProvider>
-                </Box>
-            </Box>
             <TextField
                 id="outlined-multiline-static"
                 label="Titre"
@@ -90,7 +43,6 @@ export default function Editor({tempNoteTitle, tempNoteContent, setTempNoteTitle
                 required
                 sx={{marginBottom: "50px"}}
             />
-
             <ReactMde
                 value={tempNoteContent}
                 onChange={setTempNoteContent}

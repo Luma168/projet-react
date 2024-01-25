@@ -28,16 +28,16 @@ export default function Loader({loaderTrigger, showLoader, setShowLoader}) {
 
     const handleLoaderTrigger = () => {
         if (!loading) {
-        setSuccess(false);
-        setLoading(true);
-        timer.current = window.setTimeout(() => {
-            setSuccess(true);
-            setLoading(false);
-        }, 1000);
-    }
-};
+            setSuccess(false);
+            setLoading(true);
+            timer.current = window.setTimeout(() => {
+                setSuccess(true);
+                setLoading(false);
+            }, 1000);
+        }
+    };
 
-useEffect(() => {
+    useEffect(() => {
     if(loaderTrigger){
         handleLoaderTrigger()
         setTimeout(() => {
