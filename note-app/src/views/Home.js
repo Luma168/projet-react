@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import Editor from '../components/Editor';
 import { Button, Container, CssBaseline, Drawer, IconButton, List, ListItem, ListItemButton, ListItemText, Toolbar, Typography, styled, useTheme } from '@mui/material';
@@ -63,7 +63,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 export default function Home() {
     const [notes, setNotes] = useState([]);
-    const [currentNoteId, setCurrentNoteId] = useState("")
+    const {currentNoteId} = useParams()
     const [tempNoteTitle, setTempNoteTitle] = useState("")
     const [tempNoteContent, setTempNoteContent] = useState("")
     const [loaderTrigger, setLoaderTrigger] = useState(0)
@@ -81,14 +81,7 @@ export default function Home() {
 
     useEffect(() => {
         fetchNotes();
-    }, []);
-
-    let navigate = useNavigate();
-    const routeChange = (note) => {
-      let path = `/notes/${note.id}`;
-      navigate(path);
-      setCurrentNoteId(note.id)
-    }
+    }, [currentNoteId]);
 
     const createNewNote = async function () {
         await fetch(
@@ -234,7 +227,7 @@ export default function Home() {
                             <Sidebar 
                                 notes={sortedNotes} 
                                 currentNoteId={currentNoteId}
-                                routeChange={routeChange} 
+                                // routeChange={routeChange}
                                 deleteNote={deleteNote}
                                 updateNoteDone={updateNoteDone}
                             />

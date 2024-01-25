@@ -93,7 +93,7 @@ export default function Editor({tempNoteTitle, tempNoteContent, setTempNoteTitle
                 autoComplete='off'
                 inputProps={{
                 style: {
-                    height: '50vh',  
+                    height: '45vh',  
                 },
                 }}
             />
