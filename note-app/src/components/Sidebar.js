@@ -1,5 +1,7 @@
 import { Checkbox, IconButton, List, ListItem, ListItemButton, ListItemText, Typography} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import Swal from 'sweetalert2'
 import { Link } from 'react-router-dom';
 
@@ -11,15 +13,16 @@ export default function Sidebar({notes, currentNoteId, routeChange, deleteNote, 
             overflowY: 'auto'
         }}
         >
-        {notes !== null ? notes.map((note, index) =>
-            <Link to={`/notes/${note.id}`} className='sidebarLink'>
+        {notes !== null ? notes.map((note) =>
+            <Link to={`/notes/${note.id}`} className='sidebarLink'  key={note.id}>
                 <ListItemButton
-                key={index}
-                selected={note.id === currentNoteId}
+                    selected={note.id === currentNoteId}
                 >
                 <ListItem>
                     <Checkbox 
                         checked={note.done} 
+                        icon={<CheckCircleOutlineIcon/>}
+                        checkedIcon={<CheckCircleIcon/>}
                         onChange={() => updateNoteDone(note.id, !note.done)}
                         onClick={(e)=>{
                             e.stopPropagation()
@@ -27,22 +30,20 @@ export default function Sidebar({notes, currentNoteId, routeChange, deleteNote, 
                         
                     />
                     <ListItemText
-                    primary={
-                        <Typography variant="h5" sx={{textDecoration: note.done ? 'line-through' : ''}}>
-                        {note.title}
-                        </Typography>
-                    }
-                    secondary={
-                        <Typography variant="caption" sx={{textDecoration: note.done ? 'line-through' : ''}}>
-                        {note.content}
-                        </Typography>
-                    }
+                        primary={
+                            <Typography variant="h5">
+                            {note.title.length > 15 ? note.title.substring(0,15) + "..." : note.title}
+                            </Typography>
+                        }
+                        secondary={
+                            <Typography variant="caption">
+                            {note.content.length > 35 ? note.content.substring(0,35) + "..." : note.content}
+                            </Typography>
+                        }
                     />
-                    <IconButton edge="end" aria-label="delete">
-                        <DeleteIcon 
-                        sx={{
-                            '&:hover' : {color: 'red', transition: 'all 0.5s'}
-                        }}
+                    <IconButton 
+                        edge="end" 
+                        aria-label="delete"
                         onClick={()=> 
                             {
                                 Swal.fire({
@@ -67,13 +68,16 @@ export default function Sidebar({notes, currentNoteId, routeChange, deleteNote, 
                                 });
                             }
                         }
+                    >
+                        <DeleteIcon 
+                            sx={{
+                                '&:hover' : {color: 'red', transition: 'all 0.5s'}
+                            }}
                         />
                     </IconButton>
                 </ListItem>
-
-                </ListItemButton>
-                
-            </Link>
+            </ListItemButton>
+        </Link>
         ) : null}
         </List>
     )

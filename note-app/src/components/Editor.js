@@ -6,7 +6,6 @@ import dayjs from 'dayjs'
 import { Box, TextField } from "@mui/material"
 
 export default function Editor({tempNoteTitle, tempNoteContent, setTempNoteTitle, setTempNoteContent, noteCreatedAt, noteUpdatedAt, drawerWidth}) {
-
     return (
         <Box
             sx={{
@@ -29,7 +28,7 @@ export default function Editor({tempNoteTitle, tempNoteContent, setTempNoteTitle
                         <DateField
                             label="Crée le:"
                             format="DD - MM - YYYY"
-                            defaultValue={dayjs(noteCreatedAt)}
+                            value={dayjs(noteCreatedAt)}
                             sx={{
                                 marginBottom: '10px',
                                 marginLeft: '10px'
@@ -37,7 +36,7 @@ export default function Editor({tempNoteTitle, tempNoteContent, setTempNoteTitle
                             />
                         <TimeField
                         label="à:"
-                        defaultValue={dayjs(noteCreatedAt)}
+                        value={dayjs(noteCreatedAt)}
                         sx={{
                             marginLeft: '10px'
                         }}
@@ -49,7 +48,7 @@ export default function Editor({tempNoteTitle, tempNoteContent, setTempNoteTitle
                         <DateField
                             label="Dérnière mise à jour le:"
                             format="DD - MM - YYYY"
-                            defaultValue={dayjs(noteUpdatedAt)}
+                            value={dayjs(noteUpdatedAt)}
                             sx={{
                                 marginLeft: '10px',
                                 marginBottom: '10px'
@@ -57,7 +56,7 @@ export default function Editor({tempNoteTitle, tempNoteContent, setTempNoteTitle
                             />
                         <TimeField
                         label="à:"
-                        defaultValue={dayjs(noteUpdatedAt)}
+                        value={dayjs(noteUpdatedAt)}
                         sx={{
                             marginLeft: '10px'
                         }}

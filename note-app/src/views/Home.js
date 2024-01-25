@@ -64,13 +64,20 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 export default function Home() {
     const [notes, setNotes] = useState([]);
     const {currentNoteId} = useParams()
+    var currentNote = notes.find(note => note.id === currentNoteId)
+
     const [tempNoteTitle, setTempNoteTitle] = useState("")
     const [tempNoteContent, setTempNoteContent] = useState("")
+    const [TempNoteUpdatedAt, setTempNoteUpdatedAt] = useState("")
+
     const [loaderTrigger, setLoaderTrigger] = useState(0)
     const [showLoader, setShowLoader] = useState(false)
 
-    const currentNote = notes.find(note => note.id === currentNoteId) || notes[0]
-    const sortedNotes = notes.sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt))
+    const sortedNotes = notes.sort((a, b) => {
+        if (a.done && !b.done) return -1;
+        if (!a.done && b.done) return 1;
+        return new Date(b.updatedAt) - new Date(a.updatedAt);
+    });
     
     
     const fetchNotes = async function () {
@@ -78,9 +85,10 @@ export default function Home() {
         const data = await response.json();
         setNotes(data);
     }
-
+    
     useEffect(() => {
         fetchNotes();
+        currentNote = notes.find(note => note.id === currentNoteId)
     }, [currentNoteId]);
 
     const createNewNote = async function () {
@@ -100,6 +108,7 @@ export default function Home() {
         if (currentNote) {
             setTempNoteTitle(currentNote.title)
             setTempNoteContent(currentNote.content)
+            setTempNoteUpdatedAt(currentNote.updatedAt)
         }
     }, [currentNote])
 
@@ -227,7 +236,6 @@ export default function Home() {
                             <Sidebar 
                                 notes={sortedNotes} 
                                 currentNoteId={currentNoteId}
-                                // routeChange={routeChange}
                                 deleteNote={deleteNote}
                                 updateNoteDone={updateNoteDone}
                             />
@@ -240,7 +248,7 @@ export default function Home() {
                             setTempNoteTitle={setTempNoteTitle} 
                             setTempNoteContent={setTempNoteContent} 
                             noteCreatedAt={currentNote.createdAt} 
-                            noteUpdatedAt={currentNote.createdAt} 
+                            noteUpdatedAt={TempNoteUpdatedAt} 
                             drawerWidth={drawerWidth}
                         />
                     </Main>
