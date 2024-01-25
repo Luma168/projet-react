@@ -46,11 +46,6 @@ export default function Sidebar({notes, currentNoteId, deleteNote, updateNoteDon
                             {note.title.length > 15 ? note.title.substring(0,15) + "..." : note.title}
                             </Typography>
                         }
-                        secondary={
-                            <Typography variant="caption">
-                            {note.content.length > 35 ? note.content.substring(0,35) + "..." : note.content}
-                            </Typography>
-                        }
                     />
                     <IconButton 
                         edge="end" 

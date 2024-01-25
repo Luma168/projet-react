@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import Editor from '../components/Editor';
-import { Button, Container, CssBaseline, Drawer, FormControlLabel, IconButton, List, ListItem, ListItemButton, ListItemText, Switch, Toolbar, Typography, styled, useTheme } from '@mui/material';
+import { Box, Button, Container, CssBaseline, Drawer, FormControlLabel, IconButton, List, ListItem, ListItemButton, ListItemText, Switch, Toolbar, Typography, styled, useTheme } from '@mui/material';
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import Loader from '../components/Loader';
 import MuiAppBar from '@mui/material/AppBar';
@@ -10,6 +10,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { Divider} from 'uiw';
+import { func } from 'prop-types';
 
 
 
@@ -111,6 +112,8 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 export default function Home({onChangeTheme, theme}) {
     const [open, setOpen] = useState(true);
 
+    const [username, setUsername] = useState("")
+
     const [notes, setNotes] = useState([]);
     const {currentNoteId} = useParams()
     var currentNote = notes.find(note => note.id === currentNoteId)
@@ -135,15 +138,24 @@ export default function Home({onChangeTheme, theme}) {
     
     
     const fetchNotes = async function () {
-        const response = await fetch("/notes");
-        const data = await response.json();
+        const response = await fetch("/notes")
+        const data = await response.json()
         setNotes(data);
     }
-    
+    const fetchUser = async function () {
+        const response = await fetch("/profile")
+        const data = await response.json()
+        setUsername(data.name)
+    }
+
     useEffect(() => {
-        fetchNotes();
+        fetchUser()
+    }, [])
+
+    useEffect(() => {
+        fetchNotes()
         currentNote = notes.find(note => note.id === currentNoteId)
-    }, [currentNoteId]);
+    }, [currentNoteId])
 
     const createNewNote = async function () {
         await fetch(
@@ -178,6 +190,7 @@ export default function Home({onChangeTheme, theme}) {
         )
         setLoaderTrigger((trigger) => trigger + 1)
     }
+
     const updateNoteContent = async function (newValue) {
         await fetch(
             `/notes/${currentNote.id}`,
@@ -189,6 +202,7 @@ export default function Home({onChangeTheme, theme}) {
         )
         setLoaderTrigger((trigger) => trigger + 1)
     }
+
     const updateNoteDone = async function (noteId, newValue) {
         await fetch(
             `/notes/${noteId}`,
@@ -201,6 +215,7 @@ export default function Home({onChangeTheme, theme}) {
         setLoaderTrigger((trigger) => trigger + 1)
         fetchNotes()
     }
+
     const updateNotePin = async function (noteId, newValue) {
         await fetch(
             `/notes/${noteId}`,
@@ -240,12 +255,13 @@ export default function Home({onChangeTheme, theme}) {
     }
   
     const handleDrawerOpen = () => {
-    setOpen(true);
-    };
+        setOpen(true)
+    }
 
     const handleDrawerClose = () => {
-    setOpen(false);
-    };
+        setOpen(false)
+    }
+
     return (
         <>
             {
@@ -254,23 +270,33 @@ export default function Home({onChangeTheme, theme}) {
                     <CssBaseline />
                     <AppBar position="fixed" open={open}>
                         <Toolbar sx={{display: 'flex', justifyContent: 'space-between'}} >
-                            <IconButton
-                                color="inherit"
-                                aria-label="open drawer"
-                                onClick={handleDrawerOpen}
-                                edge="start"
-                                sx={{ mr: 2, ...(open && { display: 'none' }) }}
+                            <Box sx={{ display: 'flex', alignItems: 'center'}}>
+                                <IconButton
+                                    color="inherit"
+                                    aria-label="open drawer"
+                                    onClick={handleDrawerOpen}
+                                    edge="start"
+                                    sx={{ mr: 2, ...(open && { display: 'none' }) }}
+                                >
+                                    <MenuIcon />
+                                </IconButton>
+                                <Typography variant="h6" noWrap component="div">
+                                    Note App
+                                </Typography>
+                            </Box>
+
+                            <Box 
+                                sx={{ display: 'flex', alignItems: 'center'}}
                             >
-                                <MenuIcon />
-                            </IconButton>
-                            <Typography variant="h6" noWrap component="div">
-                                Note App
-                            </Typography>
-                            <FormControlLabel
-                                control={<MaterialUISwitch sx={{ m: 1 }} defaultChecked onChange={(_,checked)=>{
-                                    onChangeTheme(checked)
-                                }} />}
-                            />
+                                <Typography variant="h6" noWrap component="div" sx={{marginRight: '20px'}}>
+                                    {username}
+                                </Typography>
+                                <FormControlLabel
+                                    control={<MaterialUISwitch sx={{ m: 1 }} defaultChecked onChange={(_,checked)=>{
+                                        onChangeTheme(checked)
+                                    }} />}
+                                />
+                            </Box>
                         </Toolbar>
                     </AppBar>
                     <Drawer

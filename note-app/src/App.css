@@ -6,6 +6,14 @@
   text-decoration: none;
   color: inherit;
 }
+/* .mde-header{
+  background-color: transparent;
+  color: white;
+}
 
+.mde-text{
+  background-color: transparent;
+  color: white;
+} */
 iframe#webpack-dev-server-client-overlay{display:none!important}
 

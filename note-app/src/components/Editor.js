@@ -5,14 +5,27 @@ import { TimeField } from '@mui/x-date-pickers/TimeField'
 import dayjs from 'dayjs'
 import { Box, TextField } from "@mui/material"
 
+import {useEffect, useState} from "react";
+import ReactMde from "react-mde";
+import * as Showdown from "showdown";
+import "react-mde/lib/styles/css/react-mde-all.css";
+
+const converter = new Showdown.Converter({
+    tables: true,
+    simplifiedAutoLink: true,
+    strikethrough: true,
+    tasklists: true
+  });
+
 export default function Editor({tempNoteTitle, tempNoteContent, setTempNoteTitle, setTempNoteContent, noteCreatedAt, noteUpdatedAt}) {
+    const [selectedTab, setSelectedTab] = useState("write");
     return (
         <Box
             sx={{
                 height:'100%',
                 display:'flex',
                 flexDirection:'column',
-                justifyContent:'space-between'
+                justifyContent:'space-around'
             }}
         >
             <Box
@@ -78,7 +91,16 @@ export default function Editor({tempNoteTitle, tempNoteContent, setTempNoteTitle
                 sx={{marginBottom: "50px"}}
             />
 
-            <TextField
+            <ReactMde
+                value={tempNoteContent}
+                onChange={setTempNoteContent}
+                selectedTab={selectedTab}
+                onTabChange={setSelectedTab}
+                generateMarkdownPreview={markdown =>
+                Promise.resolve(converter.makeHtml(markdown))
+                }
+            />
+            {/* <TextField
                 id="outlined-multiline-static"
                 label="Contenu"
                 multiline
@@ -94,7 +116,7 @@ export default function Editor({tempNoteTitle, tempNoteContent, setTempNoteTitle
                     height: '45vh',  
                 },
                 }}
-            />
+            /> */}
         </Box>
     )
 }
