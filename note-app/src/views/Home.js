@@ -68,7 +68,6 @@ export default function Home() {
 
     const [tempNoteTitle, setTempNoteTitle] = useState("")
     const [tempNoteContent, setTempNoteContent] = useState("")
-    const [TempNoteUpdatedAt, setTempNoteUpdatedAt] = useState("")
 
     const [loaderTrigger, setLoaderTrigger] = useState(0)
     const [showLoader, setShowLoader] = useState(false)
@@ -108,7 +107,6 @@ export default function Home() {
         if (currentNote) {
             setTempNoteTitle(currentNote.title)
             setTempNoteContent(currentNote.content)
-            setTempNoteUpdatedAt(currentNote.updatedAt)
         }
     }, [currentNote])
 
@@ -248,7 +246,7 @@ export default function Home() {
                             setTempNoteTitle={setTempNoteTitle} 
                             setTempNoteContent={setTempNoteContent} 
                             noteCreatedAt={currentNote.createdAt} 
-                            noteUpdatedAt={TempNoteUpdatedAt} 
+                            noteUpdatedAt={currentNote.updatedAt} 
                             drawerWidth={drawerWidth}
                         />
                     </Main>
