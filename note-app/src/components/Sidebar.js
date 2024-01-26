@@ -18,7 +18,7 @@ export default function Sidebar({notes, currentNoteId, deleteNote, updateNoteDon
         {notes !== null ? notes.map((note) =>
             <Link to={`/notes/${note.id}`} className='sidebarLink'  key={note.id}>
                 <ListItemButton
-                    selected={note.id === currentNoteId}
+                    selected={note.id == currentNoteId}
                 >
                 <ListItem>
                     <Checkbox 
