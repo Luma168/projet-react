@@ -113,7 +113,7 @@ export default function Home({onChangeTheme, theme}) {
 
     const [notes, setNotes] = useState([]);
     const {currentNoteId} = useParams()
-    var currentNote = notes.find(note => note.id === currentNoteId)
+    var currentNote = notes.find(note => note.id == currentNoteId)
 
     const [tempNoteTitle, setTempNoteTitle] = useState("")
     const [tempNoteContent, setTempNoteContent] = useState("")
