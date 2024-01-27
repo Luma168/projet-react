@@ -115,8 +115,12 @@ export default function Home({onChangeTheme, theme}) {
     const {currentNoteId} = useParams()
     var currentNote = notes.find(note => note.id == currentNoteId)
 
+    
+    
     const [tempNoteTitle, setTempNoteTitle] = useState("")
     const [tempNoteContent, setTempNoteContent] = useState("")
+    const [tempNotePin, setTempNotePin] = useState(false)
+    const [tempNoteDone, setTempNoteDone] = useState(false)
 
     const [loaderTrigger, setLoaderTrigger] = useState(0)
     const [showLoader, setShowLoader] = useState(false)
@@ -131,12 +135,12 @@ export default function Home({onChangeTheme, theme}) {
         return new Date(b.updatedAt) - new Date(a.updatedAt);
     });
     
-    
     const fetchNotes = async function () {
         const response = await fetch("/notes")
         const data = await response.json()
         setNotes(data);
     }
+
     const fetchUser = async function () {
         const response = await fetch("/profile")
         const data = await response.json()
@@ -170,6 +174,8 @@ export default function Home({onChangeTheme, theme}) {
         if (currentNote) {
             setTempNoteTitle(currentNote.title)
             setTempNoteContent(currentNote.content)
+            setTempNotePin(currentNote.pinned)
+            setTempNoteDone(currentNote.done)
         }
     }, [currentNote])
 
@@ -233,10 +239,18 @@ export default function Home({onChangeTheme, theme}) {
                 updateNoteContent(tempNoteContent)
                 setShowLoader((show) => !show)
             }
+            if (tempNotePin !== currentNote.pinned) {
+                updateNotePin(currentNoteId, tempNotePin)
+                setShowLoader((show) => !show)
+            }
+            if (tempNoteDone !== currentNote.done) {
+                updateNoteDone(currentNoteId, tempNoteDone)
+                setShowLoader((show) => !show)
+            }
             fetchNotes()
         }, 500)
         return () => clearTimeout(timeoutId)
-    }, [tempNoteTitle, tempNoteContent])
+    }, [tempNoteTitle, tempNoteContent, tempNotePin, tempNoteDone])
 
     const deleteNote = async function (noteId) {
         await fetch(
@@ -339,10 +353,16 @@ export default function Home({onChangeTheme, theme}) {
                         {
                             currentNote ? 
                             <Editor
+                                currentNoteId={currentNoteId}
                                 tempNoteTitle={tempNoteTitle} 
                                 tempNoteContent={tempNoteContent} 
+                                tempNotePin={tempNotePin} 
+                                tempNoteDone={tempNoteDone} 
                                 setTempNoteTitle={setTempNoteTitle} 
                                 setTempNoteContent={setTempNoteContent}
+                                setTempNotePin={setTempNotePin}
+                                setTempNoteDone={setTempNoteDone}
+                                deleteNote={deleteNote}
                             />
                             : 
                             <Container sx={{

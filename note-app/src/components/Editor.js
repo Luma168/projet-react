@@ -1,9 +1,11 @@
-import { LocalizationProvider } from "@mui/x-date-pickers"
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateField } from '@mui/x-date-pickers/DateField';
-import { TimeField } from '@mui/x-date-pickers/TimeField'
-import dayjs from 'dayjs'
-import { Box, TextField } from "@mui/material"
+import { Box, Checkbox, IconButton, TextField, Typography } from "@mui/material"
+
+import DeleteIcon from '@mui/icons-material/Delete';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import PushPinIcon from '@mui/icons-material/PushPin';
+import PushPinOutlinedIcon from '@mui/icons-material/PushPinOutlined';
+import Swal from 'sweetalert2'
 
 import { useState } from "react";
 import ReactMde from "react-mde";
@@ -17,7 +19,7 @@ const converter = new Showdown.Converter({
     tasklists: true
   });
 
-export default function Editor({tempNoteTitle, tempNoteContent, setTempNoteTitle, setTempNoteContent}) {
+export default function Editor({currentNoteId, tempNoteTitle, tempNoteContent, tempNotePin, tempNoteDone, setTempNoteTitle, setTempNoteContent, setTempNotePin, setTempNoteDone, deleteNote}) {
     const [selectedTab, setSelectedTab] = useState("write");
     return (
         <Box
@@ -26,9 +28,92 @@ export default function Editor({tempNoteTitle, tempNoteContent, setTempNoteTitle
                 width:'100%',
                 display:'flex',
                 flexDirection:'column',
-                justifyContent:'space-around'
             }}
         >
+            <Box
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between'
+                }}
+            >
+                <Box
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        marginBottom: '20px'
+                    }}
+                >
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <Checkbox 
+                            checked={tempNotePin} 
+                            icon={<PushPinOutlinedIcon/>}
+                            checkedIcon={<PushPinIcon/>}
+                            onChange={() => setTempNotePin(!tempNotePin)}
+                        />
+                        <Typography variant="subtitle1" gutterBottom>
+                            {tempNotePin ? 'Épinglée' : 'Épingler'}
+                        </Typography>
+                    </Box>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            marginLeft: '30px'
+                        }}
+                    >
+                        <Checkbox 
+                            checked={tempNoteDone} 
+                            icon={<CheckCircleOutlineIcon/>}
+                            checkedIcon={<CheckCircleIcon/>}
+                            onChange={() => setTempNoteDone(!tempNoteDone)}
+                        />
+                        <Typography variant="subtitle1" gutterBottom>
+                            {tempNoteDone ? 'Faite' : 'À faire'}
+                        </Typography>
+                    </Box>
+                </Box>
+                <Box>
+                    <IconButton 
+                        edge="end" 
+                        aria-label="delete"
+                        onClick={()=> 
+                            {
+                                Swal.fire({
+                                    title: "Êtes vous sûr de vouloir supprimer la note?",
+                                    text: "Cette action est irrévérsible!",
+                                    icon: "warning",
+                                    showCancelButton: true,
+                                    confirmButtonColor: "#3085d6",
+                                    cancelButtonColor: "#d33",
+                                    confirmButtonText: "Oui, Supprimer!",
+                                    cancelButtonText: "Annuler"
+                                })
+                                .then((result) => {
+                                    if (result.isConfirmed) {
+                                        Swal.fire({
+                                            title: "Supprimée!",
+                                            text: "La note a été supprimée.",
+                                            icon: "success"
+                                        });
+                                        deleteNote(currentNoteId)
+                                    }
+                                });
+                            }
+                        }
+                    >
+                        <DeleteIcon 
+                            sx={{
+                                '&:hover' : {color: 'red', transition: 'all 0.5s'}
+                            }}
+                        />
+                    </IconButton>
+                </Box>
+            </Box>
             <TextField
                 id="outlined-multiline-static"
                 label="Titre"
@@ -51,6 +136,7 @@ export default function Editor({tempNoteTitle, tempNoteContent, setTempNoteTitle
                 generateMarkdownPreview={markdown =>
                 Promise.resolve(converter.makeHtml(markdown))
                 }
+                minEditorHeight={400}
             />
             {/* <TextField
                 id="outlined-multiline-static"
