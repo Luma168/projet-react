@@ -348,7 +348,7 @@ export default function Home({onChangeTheme, theme}) {
                             updateNotePin={updateNotePin}
                         />
                     </Drawer>
-                    <Main open={open} sx={{height:'90%'}}>
+                    <Main open={open}>
                         <DrawerHeader />
                         {
                             currentNote ? 

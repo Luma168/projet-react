@@ -1,4 +1,4 @@
-import { Box, Checkbox, IconButton, TextField, Typography } from "@mui/material"
+import { Box, Button, Checkbox, TextField, Typography } from "@mui/material"
 
 import DeleteIcon from '@mui/icons-material/Delete';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -78,9 +78,12 @@ export default function Editor({currentNoteId, tempNoteTitle, tempNoteContent, t
                     </Box>
                 </Box>
                 <Box>
-                    <IconButton 
+                    <Button 
                         edge="end" 
                         aria-label="delete"
+                        sx={{
+                            '&:hover' : {color: 'red', transition: 'all 0.5s'}
+                        }}
                         onClick={()=> 
                             {
                                 Swal.fire({
@@ -105,13 +108,10 @@ export default function Editor({currentNoteId, tempNoteTitle, tempNoteContent, t
                                 });
                             }
                         }
+                        startIcon={<DeleteIcon />}
                     >
-                        <DeleteIcon 
-                            sx={{
-                                '&:hover' : {color: 'red', transition: 'all 0.5s'}
-                            }}
-                        />
-                    </IconButton>
+                        Supprimer
+                    </Button>
                 </Box>
             </Box>
             <TextField
@@ -138,23 +138,6 @@ export default function Editor({currentNoteId, tempNoteTitle, tempNoteContent, t
                 }
                 minEditorHeight={400}
             />
-            {/* <TextField
-                id="outlined-multiline-static"
-                label="Contenu"
-                multiline
-                rows={4}
-                value={tempNoteContent}
-                fullWidth
-                onChange={(e)=>{setTempNoteContent(e.target.value)}}
-                placeholder='Commencez à écrire'
-                type='text'
-                autoComplete='off'
-                inputProps={{
-                style: {
-                    height: '45vh',  
-                },
-                }}
-            /> */}
         </Box>
     )
 }
