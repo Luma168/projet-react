@@ -1,15 +1,5 @@
 {
-  "notes": [
-    {
-      "title": "Nouvelle Note",
-      "content": "Saisissez votre note",
-      "createdAt": "2024-01-28T20:06:42.415Z",
-      "updatedAt": "2024-01-28T20:06:42.415Z",
-      "done": false,
-      "pinned": false,
-      "id": 1
-    }
-  ],
+  "notes": [],
   "profile": {
     "name": "Arnaud"
   }
