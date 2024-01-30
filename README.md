@@ -5,5 +5,6 @@
   
 ## Lancer l'application:
 - cd ./note-app
+- npm install
 - npm i react-mde --legacy-peer-deps (que la première fois)
 - npm start
